@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bayrjargal AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:#0D0D14;
+  --lavender:#7C5CBF;
+  --lavender-light:#A78BDA;
+  --mint:#5CC8A0;
+  --cream:#F5F2FF;
+  --soft:#E8E2FF;
+  --white:#FFFFFF;
+  --muted:#8B82A7;
+}
+
+body{font-family:'Space Grotesk',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden}
+
+/* STARS BG */
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.star{position:absolute;border-radius:50%;background:white;animation:twinkle var(--d,3s) ease-in-out infinite var(--delay,0s)}
+@keyframes twinkle{0%,100%{opacity:0.1;transform:scale(1)}50%{opacity:0.7;transform:scale(1.3)}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,13,20,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(124,92,191,0.2)}
+.nav-logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:-0.5px}
+.nav-logo span{color:var(--lavender-light)}
+.nav-links{display:flex;gap:28px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s}
+.nav-links a:hover{color:var(--white)}
+
+/* HERO */
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 60px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(124,92,191,0.15);border:1px solid rgba(124,92,191,0.4);border-radius:30px;padding:6px 16px;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--lavender-light);margin-bottom:28px}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--mint);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(42px,7vw,88px);font-weight:800;line-height:1.0;letter-spacing:-2px;margin-bottom:24px}
+.hero h1 em{font-style:normal;color:var(--lavender-light)}
+.hero h1 .cat-accent{color:var(--mint)}
+.hero-sub{font-size:clamp(15px,2vw,19px);color:var(--muted);max-width:520px;line-height:1.65;margin-bottom:40px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:60px}
+.btn-primary{background:var(--lavender);color:white;border:none;padding:14px 28px;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-primary:hover{background:var(--lavender-light);transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,0.2);padding:14px 28px;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-ghost:hover{border-color:var(--lavender-light);color:var(--lavender-light)}
+
+/* BIG CAT SVG */
+.hero-cat{font-size:120px;line-height:1;margin-bottom:0;animation:float 4s ease-in-out infinite;filter:drop-shadow(0 0 40px rgba(124,92,191,0.5))}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+/* CHAT */
+.chat-section{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:0 24px 80px}
+.chat-header{text-align:center;margin-bottom:32px}
+.chat-header h2{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:800;letter-spacing:-1px;margin-bottom:8px}
+.chat-header p{color:var(--muted);font-size:15px}
+.chat-box{background:rgba(255,255,255,0.04);border:1px solid rgba(124,92,191,0.25);border-radius:20px;overflow:hidden}
+.chat-messages{padding:24px;min-height:280px;max-height:400px;overflow-y:auto;display:flex;flex-direction:column;gap:16px;scrollbar-width:thin;scrollbar-color:rgba(124,92,191,0.3) transparent}
+.msg{display:flex;gap:12px;align-items:flex-start}
+.msg.user{flex-direction:row-reverse}
+.msg-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.msg.ai .msg-avatar{background:rgba(124,92,191,0.3)}
+.msg.user .msg-avatar{background:rgba(92,200,160,0.3)}
+.msg-bubble{background:rgba(255,255,255,0.07);border-radius:14px;padding:12px 16px;font-size:14px;line-height:1.6;max-width:80%;color:#E2DDFF}
+.msg.user .msg-bubble{background:rgba(124,92,191,0.25);color:white}
+.chat-input-row{border-top:1px solid rgba(124,92,191,0.2);padding:16px;display:flex;gap:10px}
+.chat-input{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(124,92,191,0.25);border-radius:10px;padding:12px 16px;font-family:'Space Grotesk',sans-serif;font-size:14px;color:white;outline:none;transition:border-color 0.2s}
+.chat-input::placeholder{color:var(--muted)}
+.chat-input:focus{border-color:var(--lavender-light)}
+.send-btn{background:var(--lavender);border:none;border-radius:10px;width:44px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;flex-shrink:0}
+.send-btn:hover{background:var(--lavender-light)}
+.send-btn:disabled{opacity:0.5;cursor:default}
+.send-btn svg{width:18px;height:18px;fill:white}
+
+/* CATS GALLERY */
+.cats-section{position:relative;z-index:1;padding:0 24px 80px;max-width:1100px;margin:0 auto}
+.cats-header{text-align:center;margin-bottom:40px}
+.cats-header h2{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,38px);font-weight:800;letter-spacing:-1px;margin-bottom:8px}
+.cats-header p{color:var(--muted);font-size:15px}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+.cat-card{background:rgba(255,255,255,0.04);border:1px solid rgba(124,92,191,0.2);border-radius:18px;overflow:hidden;transition:transform 0.2s,border-color 0.2s}
+.cat-card:hover{transform:translateY(-4px);border-color:rgba(124,92,191,0.5)}
+.cat-emoji-box{height:160px;display:flex;align-items:center;justify-content:center;font-size:72px;position:relative;overflow:hidden}
+.cat-info{padding:16px}
+.cat-info h3{font-size:16px;font-weight:700;margin-bottom:4px}
+.cat-info p{font-size:13px;color:var(--muted);line-height:1.4}
+.cat-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:5px;margin-top:8px;background:rgba(124,92,191,0.2);color:var(--lavender-light)}
+
+/* FEATURES */
+.features{position:relative;z-index:1;padding:0 24px 80px;max-width:1100px;margin:0 auto}
+.features-header{text-align:center;margin-bottom:40px}
+.features-header h2{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,38px);font-weight:800;letter-spacing:-1px;margin-bottom:8px}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.feature-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:28px;transition:border-color 0.2s}
+.feature-card:hover{border-color:rgba(124,92,191,0.4)}
+.feature-icon{font-size:36px;margin-bottom:14px}
+.feature-card h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.feature-card p{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.06);padding:32px 24px;text-align:center;color:var(--muted);font-size:13px}
+footer strong{color:var(--lavender-light)}
+
+/* TYPING */
+.typing{display:flex;gap:5px;align-items:center;padding:4px 0}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--lavender-light);animation:blink 1.2s ease-in-out infinite}
+.typing span:nth-child(2){animation-delay:0.2s}
+.typing span:nth-child(3){animation-delay:0.4s}
+@keyframes blink{0%,80%,100%{transform:scale(0.7);opacity:0.4}40%{transform:scale(1);opacity:1}}
+
+@media(max-width:600px){
+  .nav-links{display:none}
+  .hero h1{letter-spacing:-1px}
+}
+</style>
+</head>
+<body>
+
+<!-- STARS -->
+<div class="stars" id="stars"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Bayrjargal <span>AI</span> 🐱</div>
+  <div class="nav-links">
+    <a href="#chat">Chat</a>
+    <a href="#cats">Cats</a>
+    <a href="#features">Features</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> AI + Cats = Perfect Combo</div>
+  <div class="hero-cat">🐱</div>
+  <h1>Meet <em>Bayrjargal</em><br/>Your <span class="cat-accent">Purr-fect</span> AI</h1>
+  <p class="hero-sub">An AI assistant that loves cats just as much as you do. Ask anything, get smart answers — with a feline twist.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('chat').scrollIntoView({behavior:'smooth'})">Start Chatting 🐾</button>
+    <button class="btn-ghost" onclick="document.getElementById('cats').scrollIntoView({behavior:'smooth'})">Meet the Cats</button>
+  </div>
+</section>
+
+<!-- CHAT -->
+<section class="chat-section" id="chat">
+  <div class="chat-header">
+    <h2>Chat with Bayrjargal AI 🐾</h2>
+    <p>Ask me anything — I'm smart, friendly, and cat-obsessed.</p>
+  </div>
+  <div class="chat-box">
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg ai">
+        <div class="msg-avatar">🐱</div>
+        <div class="msg-bubble">Meow! Hi there! I'm Bayrjargal AI — your purr-sonal assistant. I can help you with any question, and yes, I absolutely love cats. What's on your mind? 🐾</div>
+      </div>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" placeholder="Ask me anything… or about cats 🐱" onkeydown="if(event.key==='Enter')sendMsg()"/>
+      <button class="send-btn" id="sendBtn" onclick="sendMsg()">
+        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- CATS GALLERY -->
+<section class="cats-section" id="cats">
+  <div class="cats-header">
+    <h2>Our Cat Crew 🐈</h2>
+    <p>The feline friends who inspire Bayrjargal AI every day.</p>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card">
+      <div class="cat-emoji-box" style="background:linear-gradient(135deg,#2d1b69,#7c3aed)">🐱</div>
+      <div class="cat-info"><h3>Luna</h3><p>Loves midnight coding sessions and debugging by sitting on keyboards.</p><span class="cat-badge">Lead Debugger</span></div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-emoji-box" style="background:linear-gradient(135deg,#064e3b,#059669)">😺</div>
+      <div class="cat-info"><h3>Byte</h3><p>The orange tabby who reviews pull requests and naps on monitors.</p><span class="cat-badge">Code Reviewer</span></div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-emoji-box" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6)">😸</div>
+      <div class="cat-info"><h3>Cosmos</h3><p>A fluffy Siberian who thinks about machine learning while bird-watching.</p><span class="cat-badge">AI Researcher</span></div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-emoji-box" style="background:linear-gradient(135deg,#7f1d1d,#dc2626)">🐈</div>
+      <div class="cat-info"><h3>Noodle</h3><p>Long-bodied rescue who specializes in stretching across entire desks.</p><span class="cat-badge">Desk Strategist</span></div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-emoji-box" style="background:linear-gradient(135deg,#451a03,#d97706)">😻</div>
+      <div class="cat-info"><h3>Mochi</h3><p>Round, soft, and somehow always in the exact spot you need to sit.</p><span class="cat-badge">Comfort Officer</span></div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-emoji-box" style="background:linear-gradient(135deg,#1a1a2e,#5cc8a0)">🐾</div>
+      <div class="cat-info"><h3>Pixel</h3><p>Tuxedo cat who insists on perfect design — knocks things off desks if it's ugly.</p><span class="cat-badge">Design Critic</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-header">
+    <h2>What Bayrjargal AI Can Do</h2>
+    <p style="color:var(--muted);font-size:15px">Smart, helpful, and always meowing for more.</p>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card"><div class="feature-icon">🧠</div><h3>Smart Answers</h3><p>Ask any question and get clear, thoughtful answers — from science to philosophy to cat behavior.</p></div>
+    <div class="feature-card"><div class="feature-icon">✍️</div><h3>Writing Help</h3><p>Essays, emails, stories, poems — Bayrjargal AI writes with you and for you.</p></div>
+    <div class="feature-card"><div class="feature-icon">💻</div><h3>Code Assistant</h3><p>Debug, explain, and write code in any language. Luna the cat approves every function.</p></div>
+    <div class="feature-card"><div class="feature-icon">🐱</div><h3>Cat Facts</h3><p>An endless supply of cat trivia, fun facts, and adorable cat wisdom on demand.</p></div>
+    <div class="feature-card"><div class="feature-icon">🌍</div><h3>Any Language</h3><p>Chat in English, Mongolian, or dozens of other languages. Cats are universal.</p></div>
+    <div class="feature-card"><div class="feature-icon">⚡</div><h3>Always Fast</h3><p>Lightning-quick responses because cats don't like to wait — and neither do you.</p></div>
+  </div>
+</section>
+
+<footer>
+  Made with 💜 and 🐾 by <strong>Bayrjargal AI</strong> — Where intelligence meets cats.
+</footer>
+
+<script>
+// Stars
+const starsEl = document.getElementById('stars');
+for(let i=0;i<80;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const size=Math.random()*2.5+1;
+  s.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${(Math.random()*3+2).toFixed(1)}s;--delay:-${(Math.random()*5).toFixed(1)}s`;
+  starsEl.appendChild(s);
+}
+
+// Chat
+const systemPrompt = `You are Bayrjargal AI — a helpful, warm, and clever AI assistant who absolutely loves cats. 
+You answer any question helpfully and accurately.
+You have a gentle sense of humor and occasionally reference cats naturally (not forced every message).
+You are named after a Mongolian name "Bayrjargal" which means "happiness and joy".
+Keep responses concise and friendly. Use an occasional cat emoji 🐱 or paw 🐾 but don't overdo it.`;
+
+let history = [];
+
+async function sendMsg(){
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value='';
+  document.getElementById('sendBtn').disabled=true;
+
+  appendMsg('user',text,'😊');
+  const typingId = appendTyping();
+
+  history.push({role:'user',content:text});
+
+  try{
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1000,
+        system: systemPrompt,
+        messages: history
+      })
+    });
+    const data = await res.json();
+    const reply = data.content.map(b=>b.text||'').join('');
+    removeTyping(typingId);
+    appendMsg('ai',reply,'🐱');
+    history.push({role:'assistant',content:reply});
+  }catch(e){
+    removeTyping(typingId);
+    appendMsg('ai','Oops, something went wrong! Please try again 🐾','🐱');
+  }
+  document.getElementById('sendBtn').disabled=false;
+  input.focus();
+}
+
+function appendMsg(role,text,avatar){
+  const msgs=document.getElementById('chatMessages');
+  const div=document.createElement('div');
+  div.className=`msg ${role}`;
+  div.innerHTML=`<div class="msg-avatar">${avatar}</div><div class="msg-bubble">${text.replace(/\n/g,'<br/>')}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function appendTyping(){
+  const msgs=document.getElementById('chatMessages');
+  const id='typing-'+Date.now();
+  const div=document.createElement('div');
+  div.className='msg ai';
+  div.id=id;
+  div.innerHTML=`<div class="msg-avatar">🐱</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+  return id;
+}
+
+function removeTyping(id){
+  const el=document.getElementById(id);
+  if(el)el.remove();
+}
+</script>
+</body>
+</html>
